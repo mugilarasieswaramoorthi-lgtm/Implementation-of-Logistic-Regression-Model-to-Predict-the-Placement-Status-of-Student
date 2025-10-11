@@ -63,10 +63,6 @@ from sklearn.metrics import confusion_matrix
  print("\n confusion matrix:\n",confusion)
  from sklearn.metrics import classification_report 
 classification_report1=classification_report(y_test,y_pred) 
-https://github.com/gayathri1416/Implementation-of-Logistic-Regression-Model-to-Predict-the-Placement-Status-of-Student/blob/main/README.md
- 2/5
-07/10/2025, 07:55
- Implementation-of-Logistic-Regression-Model-to-Predict-the-Placement-Status-of-Student/README.md at main · gayathri141…
  print("\n classification_report1:\n",classification_report1) 
 lr.predict([[1,80,1,90,1,1,90,1,0,85,1,85]])
 
