@@ -25,69 +25,60 @@ Developed by:Mugilarasi E
 RegisterNumber: 25017644 
 
 
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import SGDRegressor
-from sklearn.metrics import mean_squared_error
-
-data = {
-    'Square_Feet': [1200, 1500, 1800, 2000, 2200, 2500, 2700, 3000, 3200, 3500],
-    'Bedrooms': [2, 3, 3, 4, 4, 4, 5, 5, 5, 6],
-    'Age': [5, 10, 15, 20, 5, 10, 15, 20, 5, 10],
-    'Price': [200000, 250000, 270000, 300000, 320000, 350000, 370000, 400000, 420000, 450000],
-    'Occupants': [3, 4, 4, 5, 5, 5, 6, 6, 6, 7]
-}
-
-df = pd.DataFrame(data)
-
-X = df[['Square_Feet', 'Bedrooms', 'Age']].values
-Y = df[['Price', 'Occupants']].values  
-
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-
-scaler_X = StandardScaler()
-scaler_Y = StandardScaler()
-
-X_train_scaled = scaler_X.fit_transform(X_train)
-X_test_scaled = scaler_X.transform(X_test)
-
-Y_train_scaled = scaler_Y.fit_transform(Y_train)
-Y_test_scaled = scaler_Y.transform(Y_test)
-
-sgd_price = SGDRegressor(max_iter=1000, learning_rate='invscaling', eta0=0.01, random_state=42)
-sgd_occupants = SGDRegressor(max_iter=1000, learning_rate='invscaling', eta0=0.01, random_state=42)
-
-sgd_price.fit(X_train_scaled, Y_train_scaled[:, 0])
-sgd_occupants.fit(X_train_scaled, Y_train_scaled[:, 1])
-
-Y_pred_price_scaled = sgd_price.predict(X_test_scaled)
-Y_pred_occupants_scaled = sgd_occupants.predict(X_test_scaled)
-
-Y_pred_price = scaler_Y.inverse_transform(
-    np.column_stack((Y_pred_price_scaled, np.zeros(len(Y_pred_price_scaled))))
-)[:, 0]
-
-Y_pred_occupants = scaler_Y.inverse_transform(
-    np.column_stack((np.zeros(len(Y_pred_occupants_scaled)), Y_pred_occupants_scaled))
-)[:, 1]
-
-mse_price = mean_squared_error(Y_test[:, 0], Y_pred_price)
-mse_occupants = mean_squared_error(Y_test[:, 1], Y_pred_occupants)
-
-print("Predicted Prices:", Y_pred_price)
-print("Actual Prices:", Y_test[:, 0])
-print("Mean Squared Error (Price):", mse_price)
-
-print("\nPredicted Occupants:", Y_pred_occupants)
-print("Actual Occupants:", Y_test[:, 1])
-print("Mean Squared Error (Occupants):", mse_occupants)
+import pandas as pd 
+data=pd.read_csv("Placement_Data.csv") 
+print("first 5 elements:\n",data.head()) 
+data1=data.copy() 
+data1=data1.drop(["sl_no","salary"],axis=1) 
+data1.head() 
+data1.isnull() 
+data1.duplicated().sum() 
+from sklearn .preprocessing import LabelEncoder 
+le=LabelEncoder() 
+data1["gender"]=le.fit_transform(data1["gender"]) 
+data1["ssc_b"]=le.fit_transform(data1["ssc_b"]) 
+data1["hsc_b"]=le.fit_transform(data1["hsc_b"]) 
+data1["hsc_s"]=le.fit_transform(data1["hsc_s"]) 
+data1["degree_t"]=le.fit_transform(data1["degree_t"]) 
+data1["workex"]=le.fit_transform(data1["workex"]) 
+data1["specialisation"]=le.fit_transform(data1["specialisation"]) 
+data1["status"]=le.fit_transform(data1["status"]) 
+data1 
+x=data1.iloc[:,:-1] 
+print("\n x:\n",x) 
+y=data1["status"] 
+print("\n y:\n",y)
+ from sklearn.model_selection import train_test_split 
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_sta
+ from sklearn.linear_model import LogisticRegression 
+lr=LogisticRegression(solver="liblinear") 
+lr.fit(x_train,y_train) 
+y_pred=lr.predict(x_test) 
+print("\n y_pred:\n",y_pred) 
+from sklearn.metrics import accuracy_score 
+accuracy=accuracy_score(y_test,y_pred) 
+print("\n accuracy:\n",accuracy) 
+from sklearn.metrics import confusion_matrix
+ confusion=confusion_matrix(y_test,y_pred)
+ print("\n confusion matrix:\n",confusion)
+ from sklearn.metrics import classification_report 
+classification_report1=classification_report(y_test,y_pred) 
+https://github.com/gayathri1416/Implementation-of-Logistic-Regression-Model-to-Predict-the-Placement-Status-of-Student/blob/main/README.md
+ 2/5
+07/10/2025, 07:55
+ Implementation-of-Logistic-Regression-Model-to-Predict-the-Placement-Status-of-Student/README.md at main · gayathri141…
+ print("\n classification_report1:\n",classification_report1) 
+lr.predict([[1,80,1,90,1,1,90,1,0,85,1,85]])
 
 ```
 
 ## Output:
-<img width="576" height="186" alt="Screenshot 2025-10-06 202326" src="https://github.com/user-attachments/assets/c9533c45-4a59-4a9b-89d0-4c4b3f5198c9" />
+![5th 1](https://github.com/user-attachments/assets/b5ab9d0d-7939-4ced-b7b3-a07962d7f138)
+![5th 2](https://github.com/user-attachments/assets/69fdb6ee-e2a0-476e-bcd6-06dcb282e0d8)
+![5th 3](https://github.com/user-attachments/assets/eaae98fb-351a-40b9-b64c-abe5612d860e)
+![5th 4](https://github.com/user-attachments/assets/bbae59fe-e8f6-4f6f-9ff1-be3840e6d424)
+![5th 5](https://github.com/user-attachments/assets/20b9dfdb-26f7-452f-aab1-291908d15ae7)
+
 
 
 
